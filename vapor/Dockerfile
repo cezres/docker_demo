@@ -45,12 +45,12 @@ ENV SWIFT_PLATFORM=$SWIFT_PLATFORM \
 
 # Download the binary and sig files, check the signature, unzip the package and set the correct priviledge.
 RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | tr -d .)/$SWIFT_VERSION/$SWIFT_VERSION-$SWIFT_PLATFORM.tar.gz \
-    && curl -fSsL $SWIFT_URL -o swift.tar.gz \
-    && curl -fSsL $SWIFT_URL.sig -o swift.tar.gz.sig \
+    && curl -SL $SWIFT_URL -o swift.tar.gz \
+    # && curl -SL $SWIFT_URL.sig -o swift.tar.gz.sig \
     && export GNUPGHOME="$(mktemp -d)" \
-    && set -e; gpg --quiet --keyserver ha.pool.sks-keyservers.net \
-        --recv-keys "5E4DF843FB065D7F7E24FBA2EF5430F071E1B235"; \
-        gpg --batch --verify --quiet swift.tar.gz.sig swift.tar.gz \
+    # && set -e; gpg --quiet --keyserver ha.pool.sks-keyservers.net \
+    #     --recv-keys "5E4DF843FB065D7F7E24FBA2EF5430F071E1B235"; \
+    #     gpg --batch --verify --quiet swift.tar.gz.sig swift.tar.gz \
     && tar -xzf swift.tar.gz --directory / --strip-components=1 \
     && chmod -R o+r /usr/lib/swift \
     && rm -r "$GNUPGHOME" swift.tar.gz.sig swift.tar.gz
