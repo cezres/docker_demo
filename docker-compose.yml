@@ -3,7 +3,7 @@ version: "3.6"
 services:
     vapor:
         build:
-            context: ./vapor
+            context: ./
         image: ${CURRENT_VAPOR_IMG}
         ports:
             - 8080:8080
