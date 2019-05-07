@@ -49,8 +49,14 @@ RUN apt-get install vapor -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN apt-get update && apt-get install -y \
-    libsqlite3-dev \
-    libsodium-dev
+    libsqlite3-dev
+    # libsodium-dev
+
+RUN curl -SL https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz -o libsodium-1.0.16.tar.gz \
+    && tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16 \
+    && ./configure && make -j4 && make install \
+    && ldconfig \
+    && cd ../
 
 # Download the binary and sig files, check the signature, unzip the package and set the correct priviledge.
 RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | tr -d .)/$SWIFT_VERSION/$SWIFT_VERSION-$SWIFT_PLATFORM.tar.gz \
@@ -63,8 +69,8 @@ RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | 
 #     && rm -r "$GNUPGHOME" swift.tar.gz
 
 RUN mkdir -p /usr/swift \
-    && tar -xvzf swift.tar.gz -C /usr/swift --strip-components=2 \
-    && chmod -R o+r /usr/swift \
+    && tar -xvzf swift.tar.gz -C /usr --strip-components=2 \
+    && chmod -R o+r /usr/lib/swift \
     && rm -r swift.tar.gz
 
 RUN swift --version && vapor --version
