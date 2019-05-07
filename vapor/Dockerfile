@@ -67,6 +67,12 @@ RUN mkdir -p /usr/swift \
     && chmod -R o+r /usr/swift \
     && rm -r swift.tar.gz
 
+RUN curl -SL https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz -o libsodium-1.0.16.tar.gz \
+    && tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16 \
+    && ./configure && make -j4 && make install \
+    && ldconfig \
+    && cd ../
+    
 RUN swift --version && vapor --version
 
 # ENTRYPOINT vapor build && vapor run --hostname=0.0.0.0
