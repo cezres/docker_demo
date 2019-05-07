@@ -1,6 +1,4 @@
-networks:
-    faucet-net:
-        driver: bridge
+version: "3.6"
 
 services:
     vapor:
@@ -27,3 +25,7 @@ services:
             - ${HOST_ROOT}:${CONTAINER_ROOT}
         networks:
             - faucet-net
+
+networks:
+    faucet-net:
+        driver: bridge
