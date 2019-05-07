@@ -68,7 +68,7 @@ RUN mkdir -p /usr/swift \
     && tar -xzf swift.tar.gz -C /usr/swift --strip-components=2 \
     && rm -r swift.tar.gz
 
-RUN apt-get install wget -y && wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz \
+RUN apt-get install wget -y && curl -SL https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz -o libsodium-1.0.16.tar.gz \
     && tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16 \
     && ./configure && make -j4 && make install \
     && ldconfig \
