@@ -1,0 +1,4 @@
+module CNIOOpenSSL {
+    umbrella "/Users/tekisen/Documents/GitHub/ckb-testnet-faucet/faucet-server/.build/checkouts/swift-nio-ssl/Sources/CNIOOpenSSL/include"
+    export *
+}

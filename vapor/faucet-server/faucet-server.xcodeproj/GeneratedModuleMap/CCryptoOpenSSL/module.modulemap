@@ -1,0 +1,4 @@
+module CCryptoOpenSSL {
+    umbrella "/Users/tekisen/Documents/GitHub/ckb-testnet-faucet/faucet-server/.build/checkouts/crypto/Sources/CCryptoOpenSSL/include"
+    export *
+}
