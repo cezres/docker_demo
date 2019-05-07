@@ -55,9 +55,18 @@ RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | 
     # && chmod -R o+r /usr/lib/swift \
     # && rm -r "$GNUPGHOME" swift.tar.gz.sig swift.tar.gz
     # && rm -r "$GNUPGHOME" swift.tar.gz
-  RUN export GNUPGHOME="$(mktemp -d)" \
+RUN export GNUPGHOME="$(mktemp -d)" \
     && tar -xzf swift.tar.gz --directory / --strip-components=1 \
     && chmod -R o+r /usr/lib/swift \
     && rm -r "$GNUPGHOME" swift.tar.gz
 
-RUN swift --version
+
+# Vapor setup
+RUN /bin/bash -c "$(wget -qO- https://apt.vapor.sh)"
+
+# Install vapor and clean
+RUN apt-get install vapor -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN swift --version && vapor --version
