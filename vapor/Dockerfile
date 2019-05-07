@@ -62,8 +62,9 @@ RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | 
 #     && chmod -R o+r /usr/lib/swift \
 #     && rm -r "$GNUPGHOME" swift.tar.gz
 
-RUN tar -xvzf swift.tar.gz -C /usr/lib/swift \
-    && chmod -R o+r /usr/lib/swift \
+RUN mkdir -p /usr/swift \
+    && tar -xvzf swift.tar.gz -C /usr/swift --strip-components=2 \
+    && chmod -R o+r /usr/swift \
     && rm -r swift.tar.gz
 
 RUN swift --version && vapor --version
