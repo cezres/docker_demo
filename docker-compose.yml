@@ -13,7 +13,7 @@ services:
         tty: true
         entrypoint: bash
         networks:
-            - bx-net
+            - faucet-net
 
     nginx:
         build:
@@ -24,8 +24,8 @@ services:
         volumes:
             - ${HOST_ROOT}:${CONTAINER_ROOT}
         networks:
-            - bx-net
+            - faucet-net
 
 networks:
-    bx-net:
+    faucet-net:
         driver: bridge
