@@ -63,4 +63,4 @@ RUN export GNUPGHOME="$(mktemp -d)" \
 
 RUN swift --version && vapor --version
 
-ENTRYPOINT vapor build && vapor run --hostname=0.0.0.0
+# ENTRYPOINT vapor build && vapor run --hostname=0.0.0.0
