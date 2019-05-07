@@ -40,39 +40,37 @@ ENV SWIFT_PLATFORM=$SWIFT_PLATFORM \
     SWIFT_BRANCH=$SWIFT_BRANCH \
     SWIFT_VERSION=$SWIFT_VERSION
 
-# Vapor setup
-RUN /bin/bash -c "$(wget -qO- https://apt.vapor.sh)"
-
-# Install vapor and clean
-RUN apt-get install vapor -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN apt-get update && apt-get install -y \
-    libsqlite3-dev \
-    libsodium-dev
-
 # Download the binary and sig files, check the signature, unzip the package and set the correct priviledge.
 RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | tr -d .)/$SWIFT_VERSION/$SWIFT_VERSION-$SWIFT_PLATFORM.tar.gz \
     && curl -SL $SWIFT_URL -o swift.tar.gz
 
-# RUN mkdir -r /usr/lib/swift \
-#     && export GNUPGHOME="$(mktemp -d)" \
-#     # && tar -xzf swift.tar.gz --directory / --strip-components=1 \
-#     && chmod -R o+r /usr/lib/swift \
-#     && rm -r "$GNUPGHOME" swift.tar.gz
+RUN export GNUPGHOME="$(mktemp -d)" \
+    && tar -xzf swift.tar.gz --directory / --strip-components=1 \
+    && chmod -R o+r /usr/lib/swift \
+    && rm -r "$GNUPGHOME" swift.tar.gz
 
-RUN mkdir -p /usr/swift \
-    # && chmod -R o+r /usr/lib/swift \
-    # && rm -r /usr/swift \
-    && tar -xzf swift.tar.gz -C /usr/swift --strip-components=2 \
-    && rm -r swift.tar.gz
+#
+
+RUN apt-get -qq update && apt-get -q -y install \
+  tzdata \
+  libsqlite3-dev \
+  libsodium-dev \
+  libssl-dev \
+  pkg-config \
+  wget \
+  software-properties-common \
+  && rm -r /var/lib/apt/lists/*
+
+RUN apt-get -q -y install \
+  openssl \
+  libssl-dev
 
 RUN wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz \
     && tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16 \
     && ./configure && make -j4 && make install \
     && ldconfig
 
-RUN swift --version && vapor --version
+
+RUN swift --version
 
 # ENTRYPOINT vapor build && vapor run --hostname=0.0.0.0
