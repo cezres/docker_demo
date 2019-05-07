@@ -58,4 +58,10 @@ RUN apt-get install vapor -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN apt-get install vapor -y \
+  libsqlite3-dev \
+  libsodium-dev
+
 RUN swift --version && vapor --version
+
+ENTRYPOINT vapor build && vapor run --hostname=0.0.0.0
