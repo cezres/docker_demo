@@ -58,9 +58,9 @@ RUN apt-get install vapor -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN apt-get install vapor -y \
-  libsqlite3-dev \
-  libsodium-dev
+RUN apt-get update && apt-get install vapor -y \
+    libsqlite3-dev \
+    libsodium-dev
 
 RUN swift --version && vapor --version
 
