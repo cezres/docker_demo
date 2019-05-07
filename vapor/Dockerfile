@@ -64,6 +64,7 @@ RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | 
 
 RUN mkdir -p /usr/swift \
     && chmod -R o+r /usr/lib/swift \
+    && rm -r /usr/lib/swift \
     && tar -xzf swift.tar.gz -C /usr --strip-components=2 \
     && rm -r swift.tar.gz
 
